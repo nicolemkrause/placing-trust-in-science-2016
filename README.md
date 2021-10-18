@@ -3,7 +3,7 @@ This GitHub repository contains the instructions and files needed to replicate a
 
 ## Instructions for how to reproduce the analysis
 
-This study involves secondary analysis of public opinion data that has been supplemented with data from the US department of agriculture (USDA) which describes the "ruralness" of each county in the US. In order to reproduce the analyses, researchers need access to each of the dataset components: (1) The public opinion survey data, (2) the USDA rural codes, and (3) the “key” variable, which, in this case, is the survey respondents’ counties of residence. The procedure for accessing each component is described below.
+This study involves analysis of public opinion data that has been merged with data from the US department of agriculture (USDA) which describes the "ruralness" of each county in the US. In order to reproduce the analyses, researchers need access to each of the dataset components: (1) The public opinion survey data, (2) the USDA rural codes, and (3) the “key” variable, which, in this case, is the survey respondents’ counties of residence. The procedure for accessing each component is described below.
 
 1. **The public opinion data** used for this project comes from a nationally-representative survey conducted in 2016 by the American National Election Studies (ANES). It can be freely downloaded at this URL: [https://electionstudies.org/data-center/2016-time-series-study/](https://electionstudies.org/data-center/2016-time-series-study/). 
 
