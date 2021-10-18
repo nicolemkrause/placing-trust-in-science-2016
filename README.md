@@ -13,7 +13,7 @@ This study involves secondary analysis of public opinion data that has been supp
 
 Once researchers have access all the necessary data components from their public repositories, the public opinion data can be imported into a statistical software program of the researchers’ choice and then merged with the RUC codes, using the county IDs “key” as the common identifier. 
 
-After the data merge is complete, researchers can proceed to reproduce my analyses—in the statistical analysis program SPSS—using the syntax files I provide in this repository.  The files you need can be found in the Data Disclosure folder on this repository. The procedure is as follows:
+After the data merge is complete, researchers can proceed to reproduce my analyses—in the statistical analysis program SPSS—using the syntax files I provide in this repository.  The procedure is as follows:
 
 1. Load the merged dataset (see above) into SPSS.
 2. Run the cleanin syntax: 21-09-21-cleaning-syntax-final
