@@ -9,14 +9,14 @@ This study involves analysis of public opinion data that have been merged with d
 
 2. **The ruralness data** used for this project comes from the US department of agriculture. Specifically, these are the "rural-urban continuum" (RUC) codes. The RUC codes used for this analysis were the 2013 set, which is freely available on the USDA website: [https://www.ers.usda.gov/data-products/rural-urban-continuum-codes.aspx] (https://www.ers.usda.gov/data-products/rural-urban-continuum-codes.aspx).
 
-3. **The “key” to merge the public opinion data and the climate data**. In order to merge the first two components together, researchers will need access to the ANES “2016 restricted geocodes” file, which is available by application: [https://www.icpsr.umich.edu/web/ICPSR/studies/38087](https://www.icpsr.umich.edu/web/ICPSR/studies/38087). Note that gaining access to these data will require IRB approval and a Data Use Agreement with ICPSR. The existence of these restrictions pertaining to the survey respondents’ geocode data means that I have neither the right nor the desire to publicly disclose these data on GitHub.
+3. **The “key” to merge the public opinion data and the ruralness codes**. In order to merge the first two components together, researchers will need access to the ANES “2016 restricted geocodes” file, which is available by application: [https://www.icpsr.umich.edu/web/ICPSR/studies/38087](https://www.icpsr.umich.edu/web/ICPSR/studies/38087). Note that gaining access to these data will require IRB approval and a Data Use Agreement with ICPSR. The existence of these restrictions pertaining to the survey respondents’ geocode data means that I have neither the right nor the desire to publicly disclose these data on GitHub.
 
 Once researchers have access all the necessary data components from their public repositories, the public opinion data can be imported into a statistical software program of the researchers’ choice and then merged with the RUC codes, using the county IDs “key” as the common identifier. 
 
 After the data merge is complete, researchers can proceed to reproduce my analyses in the statistical analysis program SPSS, using the syntax files I provide in this repository.  The procedure is as follows:
 
 1. Load the merged dataset (see above) into SPSS.
-2. Run the cleanin syntax: 21-09-21-cleaning-syntax-final
+2. Run the cleaning syntax: 21-09-21-cleaning-syntax-final
 3. Run the imputation syntax to handle missing data: 21-09-21-imputation-syntax-final
 4. Run the analysis syntax over the newly-created multiple imputation dataset (mids): 21-09-21-analysis-syntax-final
 
