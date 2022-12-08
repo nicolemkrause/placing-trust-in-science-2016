@@ -24,5 +24,5 @@ Note that the Supplemental Materials file for this project also includes an alte
 
 1. Load the merged dataset (see above) into SPSS.
 2. Run the cleaning syntax: 22-09-12-cleaning-syntax.
-3. Run the alternative analyses using the altnerate syntax (22-09-supplemental-analysis-syntax), combined with the analysis plan file needed to use the complex samples module in SPSS (22-09-12-complex-sample). 
+3. Run the alternative analyses using the altnerate syntax (22-09-12-supplemental-analysis-syntax), combined with the analysis plan file needed to use the complex samples module in SPSS (22-09-12-complex-sample). 
 
