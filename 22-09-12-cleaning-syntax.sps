@@ -1,27 +1,9 @@
 ﻿* Encoding: UTF-8.
 
-*final variables for model:
-age nonwhite female edu income conservativism partyid religiosity evangelical govtknew911 obamamuslim trustwash newsdaysaweek anyfoxtv anymsnbctv feelsci.
-
-*primary sampling unit variable is V160202.
-*from ANES 2016 codebook:
-The table below indicates the weight variable to use for different types of analysis
-Weights:
-V160102  use for analysis of full sample using post‐election survey only or both pre and post 
-V160101   use for analysis of full sample using pre‐election survey data only 
-V160102f   use for analysis of face‐to‐face mode alone, using the post‐election survey or both pre and post 
-V160101f   use for analysis of face‐to‐face mode alone, using pre‐election survey data only 
-V160102w   use for analysis of Internet mode alone, using data from both pre‐ and post‐election or post alone 
-V160101w   use for analysis of Internet mode alone, using data from only the pre‐election survey 
-
-*also from the codebook, about the complex sampling design:
-V160201  Stratum – Full sample 
-V160201f  Stratum – Face‐to‐face sample 
-V160201w  Stratum – Web sample 
-V160202  Variance PSU – full sample 
-V160202f  Variance PSU – Face‐to‐face sample 
-V160202w  Variance PSU – Web sample 
-
+*READ ME FIRST: THIS FILE ASSSUMES YOU HAVE A MERGED DATASET.
+*This syntax assumes that the 2016 ANES survey data have already been merged with RUC codes based on respondents' counties of residence.
+*See the "Read me" instructions on the GitHub repository! This code will not work unless the datasets have been merged.
+*Here is the GitHub link: https://github.com/nicolemkrause/placing-trust-in-science-2016/edit/main/README.md
 
 *from the ANES 2016 codebook:
 Missing data are coded to indicate the reason they are missing, using the following codes and

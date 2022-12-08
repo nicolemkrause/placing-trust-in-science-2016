@@ -1,42 +1,32 @@
 ﻿* Encoding: UTF-8.
-*the cleaning syntax has already set all the missing values that need to be imputed to -11.
 
-*fre age nonwhite female edu income needevaluate openness conservativism partyid religiosity evangelical moralshouldadj moralnewstylesbad moralshouldtolerate moralfamilyties 
-     govtknew911 obamamuslim trustwash newsdaysaweek tvhannity tvoreilly tvchrishayes tvmaddow tvchrismatthews tvkellyfile feelsci.
+*create variables for partisan tv viewing, now that source variables have been imputed.
 
-weight off.
+compute anyfoxtv = 0.
+if (tvhannity=1 OR tvoreilly = 1 OR tvkellyfile = 1) anyfoxtv = 1.
+fre anyfoxtv.
 
-missing values 
-    age(-11)
-    nonwhite(-11) 
-    female(-11)
-    edu(-11) 
-    income(-11) 
-    conservativism(-11) 
-    partyid(-11) 
-    religiosity(-11) 
-    evangelical(-11) 
-    govtknew911(-11) 
-    obamamuslim(-11) 
-    trustwash(-11)
-    trustpeople(-11)
-    newsdaysaweek(-11) 
-    tvhannity(-11)
-    tvoreilly(-11)
-    tvchrishayes(-11)
-    tvmaddow(-11)
-    tvchrismatthews(-11)
-    tvkellyfile(-11)
-    feelsci(-11)
-    needevaluate(-11)
-    open1(-11)
-    open2(-11)
-    moralshouldadj(-11)
-    moralnewstylesbad(-11)
-    moralshouldtolerate(-11)
-    moralfamilyties(-11).
+compute anymsnbctv = 0.
+if (tvchrishayes=1 OR tvchrismatthews = 1 OR tvmaddow = 1) anymsnbctv = 1.
+fre anymsnbctv.
 
-*------ ACCOUNT FOR COMPLEX SAMPLE DESIGN ----
+fre moralshouldadj moralnewstylesbad moralshouldtolerate moralfamilyties.
+compute moraltrad = mean(moralshouldadj, moralnewstylesbad, moralshouldtolerate, moralfamilyties).
+fre moraltrad.
+
+compute openness = 0.
+compute openness = mean(open1, open2).
+fre openness.
+
+*------ MARK DATASET AS MULTIPLE IMPUTATION DATASET ----
+
+SPLIT FILE
+    LAYERED BY Imputation_.
+
+fre age nonwhite female edu income openness religiosity evangelical moraltrad conservativism partyid govtknew911 obamamuslim trustwash trustpeople newsdaysaweek anyfoxtv anymsnbctv feelsci.
+
+
+*------ ACCOUNT FOR COMPLEX SAMPLE DESIGN WITH ALT TO TAYLOR SERIES----
 
 *accounting for ANES complex sample design. 
     *Unfortunately, SPSS currently can't handle CS sample design AND multiple imputation...
@@ -87,50 +77,73 @@ simple random sample that would have the same statistical power as the actual AN
     Pre-election, combined sample 1.45
     Post-election, combined sample 1.46
    
-*So, I'm not sure which one to use for this analysis since I have both pre and post election variables. But, given that the dependent variable was post-election, I'll go with this:
+*So, I'm not sure which one to use for this analysis since I have both pre and post election variables. I'm going with 1.46 because my dependent variable is post-election.
+*I already computed the DEFFWGT variable in the missing variables syntax, so I'm just going to activate it here for analysis.
 
-compute DEFFWGT = weight / 1.46.
-execute.
+weight by DEFFWGT.
 
-*I'm not actually going to weight the data because I believe the weights should be off globally but should be accounted for in the imputation syntax (below).
-*Final note, accounting for the complex sample design is supposed to happen on the full sample, before any cases are removed for analysis, 
-    so I have calculated the adjusted weight before removing the cases for people who did not have a post-election survey.
+*------ Z-SCORE THE MODEL VARIABLES TO PRODUCE POOLED REGRESSION BETAS  ----
+    The regression functions in SPSS don't yield pooled standardized betas for multiple imputation datasets
+    To get standardized betas, we need to z-score the variables first:
+    https://www.theanalysisfactor.com/how-to-get-standardized-regression-coefficients/
+
+DESCRIPTIVES VARIABLES=
+age
+nonwhite
+female
+edu
+income
+open1
+open2
+openness
+needevaluate
+religiosity
+evangelical
+moraltrad
+partyid
+conservativism
+govtknew911
+obamamuslim
+trustwash
+trustpeople
+newsdaysaweek
+anyfoxtv
+anymsnbctv
+rural
+feelsci
+/SAVE.
+
+desc religiosity.
+
+compute cons_moral_ix = Zconservativism*Zmoraltrad.
+compute cons_relig_ix = Zconservativism*Zreligiosity.
+compute cons_anyfoxtv_ix = Zconservativism*Zanyfoxtv.
+compute moral_anyfoxtv_ix = Zmoraltrad*Zanyfoxtv.
+compute moral_relig_ix = Zmoraltrad*Zreligiosity.
+compute relig_anyfoxtv_ix = Zreligiosity*Zanyfoxtv.
+
+*------ REGRESSIONS  ----
+    The regression functions in SPSS don't yield pooled standardized betas for multiple imputation datasets
+    To get standardized betas, we need to z-score the variables first:
+    https://www.theanalysisfactor.com/how-to-get-standardized-regression-coefficients/
+   
+*The below model is run with increasing complexity, block by block, to produce the table in the paper.
+
+REGRESSION
+  /MISSING LISTWISE
+  /STATISTICS COEFF OUTS R ANOVA COLLIN TOL
+  /CRITERIA=PIN(.05) POUT(.10)
+  /NOORIGIN 
+  /DEPENDENT Zfeelsci
+  /METHOD=ENTER Zage Zfemale Znonwhite Zedu Zincome
+  /METHOD=ENTER Zrural
+  /METHOD=ENTER Zpartyid Zconservativism
+  /METHOD=ENTER Zreligiosity Zevangelical Zmoraltrad
+  /METHOD=ENTER Zopenness
+  /METHOD=ENTER Ztrustpeople Ztrustwash
+  /METHOD=ENTER Znewsdaysaweek Zanyfoxtv Zanymsnbctv
+  /METHOD=ENTER Zgovtknew911 Zobamamuslim
+  /SCATTERPLOT=(*ZRESID ,*ZPRED)
+  /RESIDUALS NORMPROB(ZRESID).
 
 
-*----------MULTIPLE IMPUTATION-----------------
- 
-*only for variables I  actually use in the model.
-
-*Impute Missing Data Values. 
-    *Use the rural variables only as predictors because they have no missing data anyway.
-    *Don't include partisan media attn yet because need to first impute missing tv
-
-        *---------REMOVE INAPPLICABLE CASES-------
-            *missing values that should NOT be imputed:
-            -1, because it's inapplicable
-            -6, because these people were never asked the question (no post-election interview)
-        *note that frequencies reveal that none of the model variables retain -1 responses, so we only need to drop those with -6.
-        *we can drop all the cases that had no post-election interview in our dependent variable (feelsci).
-
-*put all the feelsci cases back in prior to the select if command.
-missing values
-feelsci().
-
-*impute values using only on the portion of the sample used for analysis.
-temporary.
-select if (feelsci = -11 OR feelsci >-1).
-MULTIPLE IMPUTATION 
-    age nonwhite female edu income 
-    open1 open2
-    moralshouldadj moralnewstylesbad moralshouldtolerate moralfamilyties religiosity evangelical
-    partyid conservativism 
-    govtknew911 obamamuslim trustwash trustpeople
-    newsdaysaweek tvhannity tvoreilly tvchrishayes tvmaddow tvchrismatthews tvkellyfile
-    rural
-    feelsci
-  /IMPUTE METHOD=FCS MAXITER= 10 NIMPUTATIONS=20 SCALEMODEL=PMM INTERACTIONS=NONE SINGULAR=1E-012 
-    MAXPCTMISSING=NONE 
-  /MISSINGSUMMARIES NONE 
-  /IMPUTATIONSUMMARIES MODELS 
-  /OUTFILE IMPUTATIONS=
-    'C:\Users\nicky\Dropbox\UW\ANES-Rural\PUS-paper\Data\21-09-21-pmm-dataset.sav' .
