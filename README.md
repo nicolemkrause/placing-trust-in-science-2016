@@ -1,4 +1,4 @@
-# Placing trust in science, 2016
+# Placing "trust" in science, 2016
 This GitHub repository contains the instructions and files needed to replicate analysis contained in the paper titled "Placing 'trust' in science: The urban-rural divide and Americans’ feelings of warmth toward scientists," by Nicole M. Krause.
 
 ## Instructions for how to reproduce the analysis
